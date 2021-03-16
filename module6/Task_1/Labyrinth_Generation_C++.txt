@@ -1,0 +1,93 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+const int n = 5;
+
+int getRand(int start, int end) {
+	return start + rand() % (end - start + 1);
+}
+
+class Graph {
+public:
+	bool** matrix = new bool* [n * n];
+	Graph(int n) {
+		for (int i = 0; i < n * n; i++) {
+			matrix[i] = new bool[n * n];
+		}
+		for (int i = 0; i < n * n; i++) {
+			for (int j = 0; j < n * n; j++) {
+				matrix[i][j] = false;
+			}
+		}
+		queue<int> q;
+		bool* used = new bool[n * n];
+		for (int i = 0; i < n * n; i++) {
+			used[i] = false;
+		}
+		int curVertex = n / 2 * n + n / 2;
+		q.push(curVertex);
+		int NV[4]; //neighbouring vertices
+		int quanOfNV;
+		int nextVertex;
+		int oneMoreNextVertex;
+		while (!q.empty()) {
+			curVertex = q.front();
+			used[curVertex] = true;
+			q.pop();
+			quanOfNV = 0;
+			if (curVertex - n >= 0 && !used[curVertex - n]) {
+				NV[quanOfNV] = curVertex - n;
+				quanOfNV++;
+			}
+			if (curVertex + n < n * n && !used[curVertex + n]) {
+				NV[quanOfNV] = curVertex + n;
+				quanOfNV++;
+			}
+			if (curVertex % n != 0 && curVertex > 0 && !used[curVertex - 1]) {
+				NV[quanOfNV] = curVertex - 1;
+				quanOfNV++;
+			}
+			if (curVertex % n != n - 1 && curVertex != n * n - 1 && !used[curVertex + 1]) {
+				NV[quanOfNV] = curVertex + 1;
+				quanOfNV++;
+			}
+			if (quanOfNV == 0) continue;
+			nextVertex = getRand(0, quanOfNV - 1);
+			matrix[NV[nextVertex]][curVertex] = true;
+			matrix[curVertex][NV[nextVertex]] = true;
+			q.push(NV[nextVertex]);
+
+			if (getRand(1, 3) == 3) {
+				oneMoreNextVertex = getRand(0, quanOfNV - 1);
+				if (nextVertex != oneMoreNextVertex) {
+					matrix[NV[nextVertex]][curVertex] = true;
+					matrix[curVertex][NV[nextVertex]] = true;
+					q.push(NV[nextVertex]);
+				}
+			}
+		}
+	}
+	void graphPrint() {
+		for (int i = 0; i < n * n; i++) {
+			cout << i << ": ";
+			for (int j = 0; j < n * n; j++) {
+				if (matrix[i][j]) cout << j << " ";
+			}
+			cout << endl;
+		}
+		for (int i = 0; i < n * n; i++) {
+			for (int j = 0; j < n * n; j++) {
+				if (matrix[i][j]) cout << 1 << " ";
+				else cout << 0 << " ";
+			}
+			cout << endl;
+		}
+	}
+};
+
+int main()
+{
+	srand(time(0)); // рандомизация генератора случайных чисел
+	Graph g(n);
+	g.graphPrint();
+}
