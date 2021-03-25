@@ -6,140 +6,199 @@ const linAlg = linearAlgebra(),
 // window.nn = nn;
 // window.test_on_ds = test_on_ds;
 
-const CANVAS_SIZE = 200;
-const PIC_SIZE = 5;
-const CELL_SIZE = CANVAS_SIZE / PIC_SIZE;
-let cnv = document.getElementById('canvas');
 
-cnv.width = CANVAS_SIZE;
-cnv.height = CANVAS_SIZE;
+class Canvas {
 
-/** @type {CanvasRenderingContext2D} */
-let ctx = cnv.getContext('2d');
-ctx.lineJoin = 'round';
-ctx.lineCap = 'round';
-
-let pic = [[]];
-
-reset();
-function reset() {
-    drawGrid();
-    pic = Array(PIC_SIZE).fill().map(() => Array(PIC_SIZE).fill(false)); //matrix 5x5
-}
-
-
-function drawGrid() {
-    ctx.clearRect(0, 0, cnv.width, cnv.height);
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    for (let i = 1; i < PIC_SIZE; i++) {
-        ctx.moveTo(0, CELL_SIZE * i)
-        ctx.lineTo(CANVAS_SIZE, CELL_SIZE * i);
-        ctx.moveTo(CELL_SIZE * i, 0)
-        ctx.lineTo(CELL_SIZE * i, CANVAS_SIZE);
+    /** @type {CanvasRenderingContext2D} */
+    ctx;
+    cnv;
+    cnsSize;
+    picSize;
+    brushSize;
+    scaleSize;
+    constructor(id, cnvSize, picSize, initBrushSize) {
+        this.cnv = document.getElementById(id);
+        this.cnv.width = picSize;
+        this.cnv.height = picSize;
+        this.cnsSize = cnvSize;
+        this.picSize = picSize;
+        this.brushSize = initBrushSize;
+        this.ctx = this.cnv.getContext('2d');
+        this.ctx.lineJoin = 'round';
+        this.ctx.lineCap = 'round';
+        this.scaleSize = cnvSize / picSize;
+        this.ctx.lineWidth = this.brushSize;
+        this.reset();
     }
-    ctx.stroke();
-    ctx.closePath();
+
+    reset() {
+        // this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        //this.drawGrid();
+        this.ctx.clearRect(0, 0, this.cnsSize, this.cnsSize);
+        //this.ctx.scale(this.scaleSize, this.scaleSize);
+        //pic = Array(PIC_SIZE).fill().map(() => Array(PIC_SIZE).fill(false)); //matrix 5x5
+    }
+
+    drawGrid() {
+        const ctx = this.ctx;
+        const cellSize = this.cnsSize / this.picSize;
+        ctx.clearRect(0, 0, this.cnsSize, this.cnsSize);
+        ctx.lineWidth = 1;
+
+        ctx.strokeStyle = `#aaa`;
+        ctx.beginPath();
+        for (let i = 1; i < this.picSize; i++) {
+            ctx.moveTo(0, cellSize * i)
+            ctx.lineTo(this.cnsSize, cellSize * i);
+            ctx.moveTo(cellSize * i, 0)
+            ctx.lineTo(cellSize * i, this.cnsSize);
+        }
+        ctx.stroke();
+        ctx.closePath();
+        ctx.lineWidth = this.brushSize;
+        ctx.strokeStyle = `#000`;
+    }
+
+    calcCoord(x, y) {
+        let k = this.scaleSize;
+        return [(x - this.cnv.offsetLeft) / k, (y - this.cnv.offsetTop) / k];
+        // x = (x - cnv.offsetLeft);
+        // y = (y - cnv.offsetTop);
+        // x = (x - cnv.offsetLeft) / CELL_SIZE;
+        // y = (y - cnv.offsetTop) / CELL_SIZE;
+        // x = Math.max(0, Math.min(PIC_SIZE - 1, x));
+        // y = Math.max(0, Math.min(PIC_SIZE - 1, y));
+        // return [Math.floor(x), Math.floor(y)];
+    }
+
+    isPaint;
+
+    startPaint(event) {
+        //console.log('start');
+        this.isPaint = true;
+        this.continuePaint(event);
+        //paintColor = !pic[y][x];
+        //pic[y][x] = paintColor;
+
+
+        //redraw();
+    }
+
+    continuePaint(event) {
+        if (this.isPaint) {
+            const [x, y] = this.calcCoord(event.pageX, event.pageY);
+            const ctx = this.ctx;
+            ctx.beginPath();
+            ctx.arc(x, y, this.brushSize / 2, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+    }
+
+    movePaint(event) {
+        //console.log('move');
+        if (this.isPaint) {
+            const [x, y] = this.calcCoord(event.pageX, event.pageY);
+            // pic[y][x] = paintColor;
+            // redraw();
+            const ctx = this.ctx;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+    }
+
+    endPaint(event) {
+        //console.log('end');
+        if (this.isPaint) {
+            this.pausePaint(event);
+            this.isPaint = false;
+            // if ((new Matrix(pic)).getSum() > 2) {
+            //     const predicted = NN.ind_of_max(nn.predict(pic.flat()));
+            //     console.log(predicted);
+            //     answerSpan.textContent = 'Ответ: ' + predicted;
+            // } else {
+            //     answerSpan.textContent = 'Ответ: убил';
+            // }
+
+        }
+    }
+
+    pausePaint(event) {
+        if (this.isPaint) {
+            const [x, y] = this.calcCoord(event.pageX, event.pageY);
+            const ctx = this.ctx;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.closePath();
+        }
+    }
 }
 
-let k = canvas.getBoundingClientRect().width / cnv.width;
-function calcCoord(x, y) {
-    //return [(x - cnv.offsetLeft) / k, (y - cnv.offsetTop) / k];
-    x = (x - cnv.offsetLeft) / CELL_SIZE;
-    y = (y - cnv.offsetTop) / CELL_SIZE;
-    x = Math.max(0, Math.min(PIC_SIZE - 1, x));
-    y = Math.max(0, Math.min(PIC_SIZE - 1, y));
-    return [Math.floor(x), Math.floor(y)];
-}
+
+
+
+// let pic = [[]];
+
+
 
 function redraw() {
     drawGrid();
     for (let i = 0; i < PIC_SIZE; i++) {
         for (let j = 0; j < PIC_SIZE; j++) {
-            if (pic[i][j]) {
-                ctx.fillRect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            if (pic[i][j] > 0) {
+                const color = (1 - pic[i][j]) * 255;
+                ctx.fillStyle = `rgb(
+                    ${color},
+                    ${color},
+                    ${color})`;
+                ctx.fillRect(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
         }
     }
 }
 
-// function startPaint(event) {
-//     //console.log('start');
-//     isPaint = true;
-//     let [x, y] = calcCoord(event.pageX, event.pageY);
-//     ctx.beginPath();
-//     ctx.moveTo(x, y);
-// }
 
-// function movePaint(event) {
-//     //console.log('move');
-//     if (isPaint) {
-//         let [x, y] = calcCoord(event.pageX, event.pageY);
-//         ctx.lineTo(x, y);
-//         ctx.stroke();
-//         ctx.closePath();
-//         ctx.beginPath();
-//         ctx.moveTo(x, y);
-//     }
-// }
+//let paintColor = 1;
 
-// function endPaint(event) {
-//     //console.log('end');
-//     if (isPaint) {
-//         isPaint = false;
-//         let [x, y] = calcCoord(event.pageX, event.pageY);
-//         ctx.lineTo(x, y);
-//         ctx.stroke();
-//         ctx.closePath();
-//     }
-// }
+
+const CANVAS_SIZE = 500;
+const PIC_SIZE = 50;
+const CELL_SIZE = CANVAS_SIZE / PIC_SIZE;
+const BRUSH_SIZE = 1.5;
+
+const canvas = new Canvas('canvas', CANVAS_SIZE, PIC_SIZE, BRUSH_SIZE);
+
 
 const answerSpan = document.getElementById('answer');
 
-let isPaint = false;
-let paintColor = 1;
-
-function startPaint(event) {
-    //console.log('start');
-    isPaint = true;
-    let [x, y] = calcCoord(event.pageX, event.pageY);
-    paintColor = !pic[x][y];
-    pic[x][y] = paintColor;
-    redraw();
+canvas.cnv.onmousedown = (e) => {
+    canvas.startPaint(e);
 }
 
-function movePaint(event) {
-    //console.log('move');
-    if (isPaint) {
-        let [x, y] = calcCoord(event.pageX, event.pageY);
-        pic[x][y] = paintColor;
-        redraw();
-    }
+canvas.cnv.onmousemove = (e) => {
+    canvas.movePaint(e);
 }
 
-function endPaint(event) {
-    //console.log('end');
-    if (isPaint) {
-        isPaint = false;
-        if ((new Matrix(pic)).getSum() > 2) {
-            const predicted = NN.ind_of_max(nn.predict(pic.flat()));
-            console.log(predicted);
-            answerSpan.textContent = 'Ответ: ' + predicted;
-        } else {
-            answerSpan.textContent = 'Ответ: убил';
-        }
-
-    }
+canvas.cnv.onmouseleave = (e) => {
+    canvas.pausePaint(e);
 }
 
-cnv.onmousedown = startPaint;
+canvas.cnv.onmouseenter = (e) => {
+    canvas.continuePaint(e);
+}
 
-cnv.onmousemove = movePaint;
-
-document.onmouseup = endPaint;
+document.onmouseup = (e) => {
+    canvas.endPaint(e);
+}
 // cnv.onmouseout = endPaint;
 
-document.getElementById('clearBtn').onclick = reset;
+document.getElementById('clearBtn').onclick = () => {
+    canvas.reset();
+}
 
 function intToVector(a) {
     const arr = Array(10).fill(0);
@@ -156,9 +215,13 @@ document.getElementById('addExampleBtn').onclick = () => {
 };
 
 
-const nn = new NN([25, 30, 10]);
-nn.readFromFile(trained_nn);
+const nn = new NN([2500, 750, 10]);
+// nn.readFromFile(trained_nn);
 
+// let set = mnist.set(8000, 2000);
+
+// let trainingSet = set.training;
+// let testSet = set.test;
 let epochs = 1000;
 let batch_size = 10;
 let lr = 3;
@@ -166,11 +229,11 @@ let lr = 3;
 const epochsInp = document.getElementById('epochs');
 document.getElementById('trainBtn').onclick = () => {
     epochs = +epochsInp.value;
-    nn.train(examples, examples, epochs, batch_size, lr);
+    nn.train(trainingSet, testSet, epochs, batch_size, lr);
 };
 
 function test_on_ds() {
-    return nn.test(examples, 1);
+    return nn.test(testSet, 1);
 }
 
 window.test_on_ds = test_on_ds;
@@ -216,15 +279,15 @@ function drop(e) {
 }
 
 
-// function sleep(ms) {
-//     return new Promise(resolve => setTimeout(resolve, ms));
-// }
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-// window.showExamples = async () => {
-//     for (const { x, y } of examples) {
-//         pic = Matrix.reshapeFrom(x, 5, 5).data;
-//         redraw();
-//         console.log(NN.ind_of_max(y));
-//         await sleep(1000);
-//     }
-// };
+window.showExamples = async () => {
+    for (const { input, output } of testSet) {
+        pic = Matrix.reshapeFrom(input, PIC_SIZE, PIC_SIZE).data;
+        redraw();
+        console.log(`%c${NN.ind_of_max(output)}`, "font-size:50px");
+        await sleep(1000);
+    }
+};
