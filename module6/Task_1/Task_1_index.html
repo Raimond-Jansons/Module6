@@ -8,9 +8,31 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-    <input type="number" id="input-size">
-    <button id="input-apply">Apply</button>
+    <div class="header-box">
+        <div class="nav-bar">
+            <button class="btn" onclick="window.location.href = '../index.html'">
+                <span>Back</span>
+            </button>
+            <div class="input-maze-generate-wrapper">
+                <input type="text" id="input-size" placeholder="size">
+                <button id="input-apply" class="btn">
+                    <span>Apply</span>
+                </button>
+            </div>
+            <div class="toddler-wrapper">
+                <span>Delay:</span>
+                <input id="speed-toddler" type="range" min="2" max="500" value = "2">
+                <span id="toddler-value">60</span>
+            </div>
+            <button id="launch-btn" class="btn">
+                <span>Find shortest path</span>
+            </button>
+        </div>
+        <div id="info-box">
+            
+        </div>
+    </div>
 
-    <script src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
