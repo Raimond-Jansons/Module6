@@ -116,14 +116,6 @@ class Canvas {
         if (this.isPaint) {
             this.pausePaint(event);
             this.isPaint = false;
-            // if ((new Matrix(pic)).getSum() > 2) {
-            //     const predicted = NN.ind_of_max(nn.predict(pic.flat()));
-            //     console.log(predicted);
-            //     answerSpan.textContent = 'Ответ: ' + predicted;
-            // } else {
-            //     answerSpan.textContent = 'Ответ: убил';
-            // }
-
         }
     }
 
@@ -135,6 +127,15 @@ class Canvas {
             ctx.stroke();
             ctx.closePath();
         }
+    }
+
+    getPixels() {
+        const imageData = this.ctx.getImageData(0, 0, this.picSize, this.picSize).data;
+        const pixels = [];
+        for (let i = 0; i < imageData.length; i += 4) {
+            pixels.push(imageData[i + 3] / 255);
+        }
+        return pixels;
     }
 }
 
@@ -176,6 +177,8 @@ const canvas = new Canvas('canvas', CANVAS_SIZE, PIC_SIZE, BRUSH_SIZE);
 const answerSpan = document.getElementById('answer');
 
 canvas.cnv.onmousedown = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     canvas.startPaint(e);
 }
 
@@ -193,6 +196,15 @@ canvas.cnv.onmouseenter = (e) => {
 
 document.onmouseup = (e) => {
     canvas.endPaint(e);
+    const pic = canvas.getPixels();
+    if ((new Matrix(pic)).getSum() > 10) {
+        const predicted = NN.ind_of_max(nn.predict(pic));
+        console.log(predicted);
+        answerSpan.textContent = 'Ответ: ' + predicted;
+    } else {
+        answerSpan.textContent = 'Ответ: убил';
+    }
+
 }
 // cnv.onmouseout = endPaint;
 
@@ -208,14 +220,15 @@ function intToVector(a) {
 
 const examples = JSON.parse(localStorage.getItem('examples') ?? '[]');
 const digitInput = document.getElementById('digit');
+
 document.getElementById('addExampleBtn').onclick = () => {
-    examples.push({ x: pic.flat().map(v => +v), y: intToVector(digitInput.value) })
+    examples.push({ input: canvas.getPixels(), output: intToVector(digitInput.value) })
     localStorage.setItem('examples', JSON.stringify(examples));
-    reset();
+    canvas.reset();
 };
 
 
-const nn = new NN([2500, 750, 10]);
+const nn = new NN([2500, 500, 10]);
 // nn.readFromFile(trained_nn);
 
 // let set = mnist.set(8000, 2000);
@@ -229,11 +242,11 @@ let lr = 3;
 const epochsInp = document.getElementById('epochs');
 document.getElementById('trainBtn').onclick = () => {
     epochs = +epochsInp.value;
-    nn.train(trainingSet, testSet, epochs, batch_size, lr);
+    nn.train(examples, examples, epochs, batch_size, lr);
 };
 
 function test_on_ds() {
-    return nn.test(testSet, 1);
+    return nn.test(examples, 1);
 }
 
 window.test_on_ds = test_on_ds;
