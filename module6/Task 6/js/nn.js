@@ -145,7 +145,7 @@ class NN {
         delt_b[last_ind] = error;
 
         for (let i = last_ind - 1; i >= 0; i--) {
-            const z = zs[i]
+            const z = zs[i];
             const sp = NN.sigmoid_prime(z);
             error = this.ws[i + 1].trans().dot(error).mul(sp);
 

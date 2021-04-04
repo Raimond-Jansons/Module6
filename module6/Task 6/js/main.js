@@ -16,6 +16,10 @@ class Canvas {
     picSize;
     brushSize;
     scaleSize;
+    cnv28;
+    /** @type {CanvasRenderingContext2D} */
+    ctx28;
+
     constructor(id, cnvSize, picSize, initBrushSize) {
         this.cnv = document.getElementById(id);
         this.cnv.width = picSize;
@@ -29,6 +33,11 @@ class Canvas {
         this.scaleSize = cnvSize / picSize;
         this.ctx.lineWidth = this.brushSize;
         this.reset();
+
+        this.cnv28 = document.getElementById('cnv28x28');
+        this.cnv28.width = 28;
+        this.cnv28.height = 28;
+        this.ctx28 = this.cnv28.getContext('2d');
     }
 
     reset() {
@@ -137,6 +146,49 @@ class Canvas {
         }
         return pixels;
     }
+
+    getPixels28() {
+        const imageData = this.ctx28.getImageData(0, 0, 28, 28).data;
+        const pixels = [];
+        for (let i = 0; i < imageData.length; i += 4) {
+            pixels.push(imageData[i + 3] / 255);
+        }
+        return pixels;
+    }
+
+    crop28x28Img() {
+        const imageData = this.ctx.getImageData(0, 0, this.picSize, this.picSize).data;
+        let minX = this.picSize,
+            minY = this.picSize,
+            maxX = -1,
+            maxY = -1;
+
+        let sumX = 0, sumY = 0, sumPixels = 0;
+        for (let y = 0; y < this.picSize; y++) {
+            for (let x = 0; x < this.picSize; x++) {
+                const pixel = imageData[(y * this.picSize * 4) + (x * 4) + 3] / 255;
+                if (pixel > 0.7) {
+                    if (x < minX) minX = x;
+                    if (y < minY) minY = y;
+                    if (x > maxX) maxX = x;
+                    if (y > maxY) maxY = y;
+                }
+                sumX += pixel * x;
+                sumY += pixel * y;
+                sumPixels += pixel;
+            }
+        }
+        const meanX = sumX / sumPixels,
+            meanY = sumY / sumPixels;
+
+        const maxSize = Math.max(maxX - minX, maxY - minY) * 1.5;
+
+        console.log(maxSize, meanX, meanY);
+
+        this.ctx28.clearRect(0, 0, 28, 28);
+        this.ctx28.imageSmoothingQuality = 'high';
+        this.ctx28.drawImage(this.cnv, meanX - maxSize / 2, meanY - maxSize / 2, maxSize, maxSize, 0, 0, 28, 28);
+    }
 }
 
 
@@ -196,15 +248,16 @@ canvas.cnv.onmouseenter = (e) => {
 
 document.onmouseup = (e) => {
     canvas.endPaint(e);
-    const pic = canvas.getPixels();
-    if ((new Matrix(pic)).getSum() > 10) {
+    canvas.crop28x28Img();
+    const pic = canvas.getPixels28();
+    if ((new Matrix(pic)).getSum() > 7) {
         const predicted = NN.ind_of_max(nn.predict(pic));
         console.log(predicted);
         answerSpan.textContent = 'Ответ: ' + predicted;
     } else {
         answerSpan.textContent = 'Ответ: убил';
     }
-
+    
 }
 // cnv.onmouseout = endPaint;
 
@@ -228,7 +281,7 @@ document.getElementById('addExampleBtn').onclick = () => {
 };
 
 
-const nn = new NN([2500, 500, 10]);
+const nn = new NN([784, 100, 10]);
 // nn.readFromFile(trained_nn);
 
 // let set = mnist.set(8000, 2000);
