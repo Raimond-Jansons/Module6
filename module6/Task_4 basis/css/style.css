@@ -1,0 +1,80 @@
+@font-face {
+	font-family: nasalization; 
+	src: local("nasalization"), url(../../fonts/nasalization.ttf); 
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: nasalization;
+}
+
+body {
+    background-color: #313431;
+}
+#main-block {
+    width: 90%;
+    height: 80vh;
+    margin: 0 auto;
+    border: 1px solid white;
+    position: relative;
+}
+#main-block canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#main-canvas {
+    z-index: 5;
+}
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.info-box {
+    color: white;
+    font-size: 25px;
+}
+
+.btn {
+    padding: 10px 25px;
+    background-color: white;
+    border: none;
+    font-family: nasalization;
+    font-size: 25px;
+    font-weight: bold;
+    color: #313431;
+    display: inline-block;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+    border: 1px solid white;
+}
+.btn:before {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: #313431;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 0;
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    transition: all .45s;
+}
+.btn:hover {
+    color: white;
+}
+.btn:hover:before {
+    height: 600%;
+}
+.btn span {
+    position: relative;
+    z-index: 1;
+}

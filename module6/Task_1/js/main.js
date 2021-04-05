@@ -11,6 +11,8 @@ let inputApply = document.getElementById('input-apply')
 const bgc = "#313431"
 const mazeColor = "white"
 
+let isSearching = false
+
 let mainBlock; 
 
 const toddler = document.getElementById('speed-toddler')
@@ -21,6 +23,7 @@ toddler.addEventListener("input", () => {
 })
 
 inputApply.onclick = function() {
+    if (isSearching) return
     if (mainBlock != undefined) {
         mainBlock.remove()
     }
@@ -28,15 +31,15 @@ inputApply.onclick = function() {
 
     //checking input correctness
     const infoBlock = document.getElementById('info-box')
-    if (isNaN(tableSize) || tableSize < 0) {
+    if (isNaN(tableSize) || tableSize <= 0) {
         infoBlock.style.color = "red"
-        infoBlock.innerHTML = "ERROR SIZE"
-        return;
+        infoBlock.innerHTML = "ERROR"
+        return
     }
-    else if (tableSize === 1 || tableSize > 130) {
+    else if (tableSize === 1 || tableSize > 120) {
         infoBlock.style.color = "red"
-        infoBlock.innerHTML = "Correct range: [2, 130]"
-        return;
+        infoBlock.innerHTML = "Correct range: [2, 120]"
+        return
     }
     else {
         infoBlock.style.color = "white"
@@ -440,14 +443,19 @@ inputApply.onclick = function() {
     
     const launchBTN = document.querySelector('#launch-btn')
     launchBTN.onclick = function() {
+        if (isSearching) return;
+        isSearching = true
         speed = +toddler.value
         g.Astar(START, FINISH, speed).then(function(result) {
             if (result === -1) {
                 infoBlock.style.color = "red"
                 infoBlock.innerHTML = "no path"
+                isSearching = false
             }
             else {
-                infoBlock.innerHTML = "length = " + result;
+                infoBlock.style.color = "white"
+                infoBlock.innerHTML = "length = " + result
+                isSearching = false
             }
         })
     }
