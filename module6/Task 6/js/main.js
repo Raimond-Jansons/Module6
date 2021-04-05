@@ -1,5 +1,5 @@
 import NN from './nn.js';
-import trained_nn from './num5x5_nn.js'
+import trained_nn from './trained28x28.js'
 
 const linAlg = linearAlgebra(),
     Matrix = linAlg.Matrix;
@@ -257,7 +257,7 @@ document.onmouseup = (e) => {
     } else {
         answerSpan.textContent = 'Ответ: убил';
     }
-    
+
 }
 // cnv.onmouseout = endPaint;
 
@@ -281,8 +281,8 @@ document.getElementById('addExampleBtn').onclick = () => {
 };
 
 
-const nn = new NN([784, 100, 10]);
-// nn.readFromFile(trained_nn);
+const nn = new NN([784, 50, 10]);
+nn.readFromJson(trained_nn);
 
 // let set = mnist.set(8000, 2000);
 
@@ -336,7 +336,7 @@ function drop(e) {
     let reader = new FileReader();
     reader.readAsText(files[0]);
     reader.onload = function () {
-        nn.readFromFile(reader.result);
+        nn.readFromJson(JSON.parse(reader.result));
     };
 
     reader.onerror = function () {

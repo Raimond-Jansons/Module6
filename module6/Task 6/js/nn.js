@@ -173,12 +173,11 @@ class NN {
         a.click();
     }
 
-    readFromFile(json) {
-        const data = JSON.parse(json);
-        this.lnum = data.lnum;
-        this.ls = data.ls;
-        this.ws = data.ws.map(w => new Matrix(w.data));
-        this.bs = data.bs.map(b => new Matrix(b.data));
+    readFromJson(json) {
+        this.lnum = json.lnum;
+        this.ls = json.ls;
+        this.ws = json.ws.map(w => new Matrix(w.data));
+        this.bs = json.bs.map(b => new Matrix(b.data));
         console.log('loaded!');
     }
 }
