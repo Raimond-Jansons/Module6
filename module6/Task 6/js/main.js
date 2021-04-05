@@ -221,7 +221,7 @@ function redraw() {
 const CANVAS_SIZE = 500;
 const PIC_SIZE = 50;
 const CELL_SIZE = CANVAS_SIZE / PIC_SIZE;
-const BRUSH_SIZE = 1.5;
+const BRUSH_SIZE = 2;
 
 const canvas = new Canvas('canvas', CANVAS_SIZE, PIC_SIZE, BRUSH_SIZE);
 

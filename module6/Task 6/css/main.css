@@ -1,9 +1,7 @@
-body {
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    width: 100vw;
-    height: 100vh;
 }
 
 div {
@@ -11,28 +9,27 @@ div {
     margin: 10px;
 }
 
-#canvas {
+canvas {
     margin: 10px;
     border: 1px solid #000;
-    cursor: crosshair;
-    background-image: url(../grid.png);
-    width: 500px;
-    height: 500px;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
 
+#canvas {
+    cursor: crosshair;
+    background-image: url(../grid.png);
+    background-position: center;
+    background-size: cover;
+    width: 500px;
+    height: 500px;
+}
+
 #cnv28x28 {
-    margin: 10px;
-    border: 1px solid #000;
     width: 280px;
     height: 280px;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
 }
 
 #answer {
