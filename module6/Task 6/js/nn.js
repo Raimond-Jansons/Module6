@@ -25,8 +25,8 @@ class NN {
             this.ws[i] = Matrix.zero(layers[i + 1], layers[i]);
             this.bs[i] = Matrix.zero(layers[i + 1], 1);
 
-            this.ws[i].map_(() => norm_rand() * 1);
-            this.bs[i].map_(() => norm_rand() * 1);
+            this.ws[i].map_(() => norm_rand() * 1.5);
+            this.bs[i].map_(() => norm_rand() * 1.5);
         }
     }
 
@@ -54,7 +54,7 @@ class NN {
     test(test_data, v = 0) {
         let count = 0;
         let error = 0;
-        for (const { x, y } of test_data) {
+        for (const { input: x, output: y } of test_data) {
             const p = this.predict(x);
             if (NN.ind_of_max(y) == NN.ind_of_max(p)) {
                 count++;
@@ -74,7 +74,7 @@ class NN {
             // }
 
         }
-        return [count, error / test_data.length / test_data[0].y.length];
+        return [count, error / test_data.length / test_data[0].output.length];
     }
 
     static shuffle(a) {
@@ -108,7 +108,7 @@ class NN {
         const total_delt_b = this.bs.map(b => Matrix.zero(b.rows, b.cols));
 
         for (let i = start; i < end; i++) {
-            const [delt_w, delt_b] = this.backprop(batch[i].x, batch[i].y);
+            const [delt_w, delt_b] = this.backprop(batch[i].input, batch[i].output);
             for (let j = 0; j < this.lnum - 1; j++) {
                 total_delt_w[j].plus_(delt_w[j]);
                 total_delt_b[j].plus_(delt_b[j]);
@@ -145,7 +145,7 @@ class NN {
         delt_b[last_ind] = error;
 
         for (let i = last_ind - 1; i >= 0; i--) {
-            const z = zs[i]
+            const z = zs[i];
             const sp = NN.sigmoid_prime(z);
             error = this.ws[i + 1].trans().dot(error).mul(sp);
 
@@ -173,12 +173,11 @@ class NN {
         a.click();
     }
 
-    readFromFile(json) {
-        const data = JSON.parse(json);
-        this.lnum = data.lnum;
-        this.ls = data.ls;
-        this.ws = data.ws.map(w => new Matrix(w.data));
-        this.bs = data.bs.map(b => new Matrix(b.data));
+    readFromJson(json) {
+        this.lnum = json.lnum;
+        this.ls = json.ls;
+        this.ws = json.ws.map(w => new Matrix(w.data));
+        this.bs = json.bs.map(b => new Matrix(b.data));
         console.log('loaded!');
     }
 }
