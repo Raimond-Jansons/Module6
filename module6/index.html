@@ -1,19 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 6</title>
+	<link rel="stylesheet" href="styles/style.css" type="text/css">
+	<title>Module 6</title>
+	<script>
+		function funonload() {
+			const trRight = document.querySelector("#triangle-right")
+			trRight.style.borderBottomWidth = document.documentElement.clientHeight / 4 + "px"
+			trRight.style.borderLeftWidth = document.documentElement.clientWidth / 4 + "px"
+
+			const trLeft = document.querySelector("#triangle-left")
+			trLeft.style.borderBottomWidth = document.documentElement.clientHeight / 4 + "px"
+			trLeft.style.borderRightWidth = document.documentElement.clientWidth / 4 + "px"
+		}
+	</script>
 </head>
-<body>
-    <ol>
-        <li><a href="Task 1\index.html">Задача 1</a></li>
-        <li><a href="">Задача 2</a></li>
-        <li><a href="">Задача 3</a></li>
-        <li><a href="">Задача 4</a></li>
-        <li><a href="">Задача 5</a></li>
-        <li><a href="">Задача 6</a></li>
-    </ol>
+
+<body onload="funonload();">
+	<main>
+		<h1>Programming module 6</h1>
+		<div class="buttons">
+			<button class="btn" onclick="window.location.href = './Task_1/Task_1_index.html'">
+				<span>Task 1</span></button>
+			<button class="btn">
+				<span>Task 2</span>
+			</button>
+			<button class="btn">
+				<span>Task 3</span>
+			</button>
+			<button class="btn" onclick="window.location.href = './Task_4 basis/Task_4_index.html'">
+				<span>Task 4</span>
+			</button>
+			<button class="btn" onclick="window.location.href = './Task_5/index.html'">
+				<span>Task 5</span>
+			</button>
+			<button class="btn" onclick="window.location.href = './Task 6/index.html'">
+				<span>Task 6</span>
+			</button>
+		</div>
+	</main>
+	<div id="triangle-right"></div>
+	<div id="triangle-left"></div>
+	<div id="authors">
+		<h3>Authors</h3>
+		<p>Igor Lezhnin</p>
+		<p>Pavel Plotnikov</p>
+		<p>Dmitry Kalichkin</p>
+	</div>
 </body>
+
 </html>

@@ -1,0 +1,113 @@
+@font-face {
+	font-family: nasalization; 
+	src: local("nasalization"), url(../fonts/nasalization.ttf); 
+}
+@media (max-width: 1400px) {
+  #authors {display: none;}
+}
+@media (max-width: 1000px) {
+  #triangle-left, #triangle-right {display: none;}
+  main {margin-top: 0;}
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html {
+    font-family: nasalization, sans-serif;
+    color: white;
+}
+body {
+    background-color: #313431;
+}
+main {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 2%;
+}
+main h1 {
+    text-align: center;
+    font-size: 55px;
+    margin-bottom: 20px;
+}
+.buttons {
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+}
+.btn {
+    margin: 20px auto;
+    padding: 20px 45px;
+    background-color: white;
+    border: none;
+    font-family: nasalization;
+    font-size: 25px;
+    font-weight: bold;
+    color: #313431;
+    display: inline-block;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+    border: 1px solid white;
+}
+.btn:before {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: #313431;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 0;
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    transition: all .45s;
+}
+.btn:hover {
+    color: white;
+}
+.btn:hover:before {
+    height: 400%;
+}
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+#triangle-right {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 300px solid white; 
+    border-left: 500px solid transparent;
+}
+#triangle-left {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 300px solid white; 
+    border-right: 500px solid transparent;
+}
+#authors {
+    position: fixed;
+    right: 0;
+    top: 0;
+    border-bottom: 3px solid white;
+    border-left: 3px solid white;
+    padding: 30px;
+}
+#authors h3 {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 35px;
+}
+#authors p {
+    text-align: center;
+    font-size: 25px;
+    margin: 27px 0;
+}

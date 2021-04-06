@@ -1,9 +1,7 @@
-body {
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
 }
 
 div {
@@ -11,14 +9,31 @@ div {
     margin: 10px;
 }
 
-#canvas {
-    margin: 15px;
+canvas {
+    margin: 10px;
     border: 1px solid #000;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+#canvas {
     cursor: crosshair;
+    background-image: url(../grid.png);
+    background-position: center;
+    background-size: cover;
+    width: 500px;
+    height: 500px;
+}
+
+#cnv28x28 {
+    width: 280px;
+    height: 280px;
 }
 
 #answer {
-    font-size: 2em;
+    font-size: 2.3em;
 }
 
 .controls {

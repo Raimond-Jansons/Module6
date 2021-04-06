@@ -1,0 +1,134 @@
+@font-face {
+	font-family: nasalization; 
+	src: local("nasalization"), url(../../fonts/nasalization.ttf); 
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: nasalization;
+}
+
+body {
+    background-color: #313431;
+}
+
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+}
+#input-size {
+    padding: 5px 10px;
+    width: 100px;
+    font-size: 25px;
+}
+
+.main-block {
+    margin: 0 auto;
+    margin-bottom: 50px;
+    position: relative;
+    display: flex;
+}
+
+.toddler-wrapper span {
+    color: white;
+    font-size: 30px;
+}
+input[type='range'] {
+    overflow: hidden;
+    width: 130px;
+    background-color: #313431;
+}
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: ew-resize;
+    background: #434343;
+}
+input[type="range"]::-moz-range-progress {
+    background-color: white;
+}
+  
+input[type="range"]::-moz-range-track {
+    background-color: #9a905d;
+}
+  
+input[type="range"]::-ms-fill-lower {
+    background-color: white;
+}
+  
+input[type="range"]::-ms-fill-upper {
+    background-color: #9a905d;
+}
+
+#dialog {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    background-color: white;
+}
+#dialog button {
+    border: none;
+    padding: 25px;
+    font-size: 25px;
+    background-color: none;
+    border: 1px solid black;
+}
+#dialog button:hover {
+    background-color: grey;
+    transition: .5s;
+}
+#dialog span {
+    margin: 0 10px;
+    font-size: 25px;
+}
+.btn {
+    padding: 10px 25px;
+    background-color: white;
+    border: none;
+    font-family: nasalization;
+    font-size: 25px;
+    font-weight: bold;
+    color: #313431;
+    display: inline-block;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+    border: 1px solid white;
+}
+.btn:before {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: #313431;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 0;
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    transition: all .45s;
+}
+.btn:hover {
+    color: white;
+}
+.btn:hover:before {
+    height: 600%;
+}
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+#info-box {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    margin: 20px 0;
+}
