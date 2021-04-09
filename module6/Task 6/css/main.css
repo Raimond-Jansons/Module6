@@ -30,6 +30,7 @@ canvas {
 #cnv28x28 {
     width: 280px;
     height: 280px;
+    display: none;
 }
 
 #answer {

@@ -4,19 +4,68 @@
     box-sizing: border-box;
 }
 
-body {
-    width: 100vw;
-    height: 100vh;
+div {
+    text-align: center;
+    margin: 10px;
 }
 
 .controls {
     text-align: center;
 }
 
-#csv_input {
-    width: 80%;
-    height: 300px;
+.container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.controls .container>* {
+    flex-grow: 1;
+}
+
+.root {
+    margin-bottom: 25px;
+}
+
+textarea {
+    width: 90%;
+    resize: vertical;
     display: block;
     margin: 15px auto;
     padding: 5px;
+}
+
+#csvInputTrain {
+    height: 300px;
+}
+
+#csvInputTest {
+    height: 200px;
+}
+
+input, button {
+    padding: 2px;
+    margin: 5px 0;
+    vertical-align: baseline;
+}
+
+input[type="number"] {
+    width: 50px;
+}
+
+button {
+    margin: 5px 15px;
+}
+
+.info {
+    font-size: 1.3em;
+}
+
+#predicted {
+    text-align: left;
+    font-size: 1.1em;
+}
+
+.error {
+    color: rgb(245, 83, 83);
 }
