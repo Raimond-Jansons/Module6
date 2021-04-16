@@ -1,17 +1,33 @@
+@font-face {
+    font-family: nasalization;
+    src: local("nasalization"), url(../../fonts/nasalization.ttf);
+}
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: nasalization;
+}
+
+body {
+    background-color: #313431;
+    color: #eee;
 }
 
 div {
     text-align: center;
-    margin: 10px;
+    padding: 5px;
+}
+
+.d-flex {
+    display: flex;
+    justify-content: space-between;
 }
 
 canvas {
     margin: 10px;
-    border: 1px solid #000;
+    border: 1px solid #ccc;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
@@ -35,6 +51,7 @@ canvas {
 
 #answer {
     font-size: 2.3em;
+    padding-bottom: 30px;
 }
 
 .controls {
@@ -42,12 +59,70 @@ canvas {
 }
 
 #dropbox {
-    margin: 20px auto;
+    margin: 15px auto;
     border: 2px solid #c33;
-    width: 350px;
+    width: 400px;
     max-width: 90%;
-    height: 150px;
+    height: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.over {
+    transform: scale(1.1);
+    background: #717471;
+}
+
+input {
+    padding: 5px 10px;
+    width: 150px;
+    font-size: 1em;
+}
+
+.btn {
+    padding: 5px 15px;
+    background-color: #eee;
+    border: none;
+    font-family: nasalization;
+    font-size: 1em;
+    font-weight: bold;
+    color: #313431;
+    display: inline-block;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+    border: 1px solid #eee;
+}
+
+.btn:before {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: #313431;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 0;
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    transition: all .45s;
+}
+
+.btn:hover {
+    color: #eee;
+}
+
+.btn:hover:before {
+    height: 600%;
+}
+
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+#backBtn {
+    padding: 8px 20px;
+    font-size: 1.3em;
 }

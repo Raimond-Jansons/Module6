@@ -1,12 +1,28 @@
+@font-face {
+    font-family: nasalization;
+    src: local("nasalization"), url(../../fonts/nasalization.ttf);
+}
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: nasalization;
+}
+
+body {
+    background-color: #313431;
+    color: #eee;
 }
 
 div {
     text-align: center;
     margin: 10px;
+}
+
+.d-flex {
+    display: flex;
+    justify-content: space-between;
 }
 
 .controls {
@@ -33,6 +49,13 @@ textarea {
     display: block;
     margin: 15px auto;
     padding: 5px;
+    font-family: monospace;
+    font-size: 1.3em;
+}
+
+.over {
+    background: #eee;
+    box-shadow: 0 0 5px 3px #fff;
 }
 
 #csvInputTrain {
@@ -50,7 +73,7 @@ input, button {
 }
 
 input[type="number"] {
-    width: 50px;
+    width: 70px;
 }
 
 button {
@@ -68,4 +91,57 @@ button {
 
 .error {
     color: rgb(245, 83, 83);
+}
+
+input {
+    padding: 5px 10px;
+    margin: 5px;
+    font-size: 1em;
+}
+
+.btn {
+    padding: 5px 15px;
+    background-color: #eee;
+    border: none;
+    font-family: nasalization;
+    font-size: 1em;
+    font-weight: bold;
+    color: #313431;
+    display: inline-block;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+    border: 1px solid #eee;
+}
+
+.btn:before {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: #313431;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 0;
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    transition: all .45s;
+}
+
+.btn:hover {
+    color: #eee;
+}
+
+.btn:hover:before {
+    height: 600%;
+}
+
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+#backBtn {
+    padding: 8px 20px;
+    font-size: 1.3em;
 }

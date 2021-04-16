@@ -93,14 +93,14 @@ right connector from last child*/
 .tree li span {
 	position: relative;
 	z-index: 10;
-	background: #fff;
+	/* background: #fff; */
 	border: 1px solid #bbb;
 	padding: 5px 10px;
 	margin: 0 5px;
 	text-decoration: none;
-	color: #666;
-	font-family: arial, verdana, tahoma;
-	font-size: 16px;
+	color: #fff;
+	/* font-family: arial, verdana, tahoma; */
+	font-size: 1em;
 	display: inline-block;
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -108,13 +108,13 @@ right connector from last child*/
 	transition: all 0.2s;
 	-webkit-transition: all 0.2s;
 	-moz-transition: all 0.2s;
-	box-shadow: 0 -5px 5px -5px #333;
+	box-shadow: 0 -5px 5px -5px #ccc;
 }
 
 .tree span.parameter {
-	border: 1px solid #555;
-	color: #444;
-	box-shadow: 0 5px 5px -5px #444;
+	border: 1px solid #999;
+	color: #eee;
+	box-shadow: 0 5px 5px -5px #ccc;
 }
 
 .tree li.path>span, .tree li.path:not(.root)>ul>li>span {

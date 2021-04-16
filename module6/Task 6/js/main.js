@@ -32,6 +32,7 @@ class Canvas {
         this.ctx.lineCap = 'round';
         this.scaleSize = cnvSize / picSize;
         this.ctx.lineWidth = this.brushSize;
+        this.ctx.strokeStyle = `#fff`;
         this.reset();
 
         this.cnv28 = document.getElementById('cnv28x28');
@@ -313,12 +314,20 @@ document.getElementById('saveBtn').onclick = () => {
 
 const dropbox = document.getElementById("dropbox");
 dropbox.addEventListener("dragenter", dragenter, false);
+dropbox.addEventListener("dragleave", dragleave, false);
 dropbox.addEventListener("dragover", dragover, false);
 dropbox.addEventListener("drop", drop, false);
 
 function dragenter(e) {
     e.stopPropagation();
     e.preventDefault();
+    this.classList.add('over');
+}
+
+function dragleave(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.classList.remove('over');
 }
 
 function dragover(e) {
@@ -329,6 +338,7 @@ function dragover(e) {
 function drop(e) {
     e.stopPropagation();
     e.preventDefault();
+    this.classList.remove('over');
 
     const dt = e.dataTransfer;
     const files = dt.files;

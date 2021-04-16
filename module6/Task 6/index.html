@@ -11,23 +11,29 @@
 
 <body>
     <div class="controls">
-        <div>
-            <button id="saveBtn">Сохранить</button>
+        <div class="d-flex">
+            <button class="btn" id="backBtn" onclick="window.location.href = '../index.html'">
+                <span>Back</span>
+            </button>
+            <button class="btn" id="saveBtn">
+                <span>Сохранить</span>
+            </button>
+            <div style="width: 100px"></div>
         </div>
         <div>
             <input type="number" id="epochs" value="1000" min="10" max="10000" step="10">
             <label for="epochs">эпох</label>
-            <button id="trainBtn">Учись</button>
+            <button class="btn" id="trainBtn"><span>Учись</span></button>
         </div>
         <div id="dropbox">
             Перетащите файл nn.json
         </div>
         <div>
             <input type="number" id="digit">
-            <button id="addExampleBtn">Добавить пример</button>
+            <button class="btn" id="addExampleBtn"><span>Добавить пример</span></button>
         </div>
         <div>
-            <button id="clearBtn">Очистить</button>
+            <button class="btn" id="clearBtn"><span>Очистить</span></button>
         </div>
     </div>
     <div>

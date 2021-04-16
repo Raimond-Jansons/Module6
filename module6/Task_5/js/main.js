@@ -406,6 +406,7 @@ document.getElementById('predictBtn').onclick = () => {
 const dropboxes = document.getElementsByTagName("textarea");
 for (const dropbox of dropboxes) {
     dropbox.addEventListener("dragenter", dragenter, false);
+    dropbox.addEventListener("dragleave", dragleave, false);
     dropbox.addEventListener("dragover", dragover, false);
     dropbox.addEventListener("drop", drop, false);
 }
@@ -414,6 +415,13 @@ for (const dropbox of dropboxes) {
 function dragenter(e) {
     e.stopPropagation();
     e.preventDefault();
+    this.classList.add('over');
+}
+
+function dragleave(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.classList.remove('over');
 }
 
 function dragover(e) {
@@ -424,7 +432,8 @@ function dragover(e) {
 function drop(e) {
     e.stopPropagation();
     e.preventDefault();
-
+    this.classList.remove('over');
+    
     const dt = e.dataTransfer;
     const files = dt.files;
 

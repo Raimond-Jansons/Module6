@@ -40,7 +40,7 @@ export default class Canvas {
 
     redraw(i) {
         for (const circle of this.circles) {
-            this.drawCircle(i, circle.x, circle.y, this.brushSize / 2, "black");
+            this.drawCircle(i, circle.x, circle.y, this.brushSize / 2, "white");
         }
     }
 
@@ -57,7 +57,7 @@ export default class Canvas {
         }
         const ctx = this.ctxs[i];
         this.circles.push({ x, y });
-        this.drawCircle(i, x, y, this.brushSize / 2, "black");
+        this.drawCircle(i, x, y, this.brushSize / 2, "white");
     }
 
     drawCircle(i, x, y, r, color) {

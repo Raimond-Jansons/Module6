@@ -21,21 +21,18 @@ export default class GA {
     curBestRouteLen;
     cnv;
 
-    constructor(cnv, citiesCoord, popSize, mutationRate, crossRate, nearestUsageRate) {
+    constructor(cnv, citiesCoord) {
         this.cnv = cnv;
         this.cities = citiesCoord.map(coord => new City(coord.x, coord.y));
+
+        this.calcCitiesDist();
+    }
+
+    setOptions({ popSize, mutationRate, crossRate, nearestUsageRate }) {
         this.popSize = popSize;
         this.mutationRate = mutationRate;
         this.crossRate = crossRate;
         this.nearestUsageRate = nearestUsageRate;
-
-        this.calcCitiesDist();
-
-        this.populationFitness(this.createInitialPopulation(false));
-        console.log(this.curBestRouteLen);
-
-        this.curPop = this.createInitialPopulation(true);
-        this.populationFitness(this.curPop);
     }
 
     drawRoute(route) {
@@ -44,6 +41,14 @@ export default class GA {
         this.cnv.drawLines(1, lines);
         this.cnv.drawCircle(1, lines[0].x, lines[0].y, 15, 'red');
         this.cnv.drawCircle(1, lines[1].x, lines[1].y, 15, 'green');
+    }
+
+    initGen() {
+        this.populationFitness(this.createInitialPopulation(false));
+        console.log(this.curBestRouteLen);
+
+        this.curPop = this.createInitialPopulation(true);
+        this.populationFitness(this.curPop);
     }
 
     nextGen() {
@@ -208,7 +213,6 @@ export default class GA {
             const first = GA.randInt(0, population.length);
             const second = GA.randInt(0, population.length);
             childs.push(...this.cross(population[first], population[second]));
-            // childs.push(...this.cross(this.getOne(population, fitnesses), this.getOne(population, fitnesses)));
         }
         return childs;
     }
