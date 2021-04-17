@@ -1,4 +1,5 @@
-import {drawPath, drawResult} from './client-functions.js'
+import {drawPath, drawResult, delay} from './client-functions.js'
+import {canvas, clearBtn, canvasListener, clearBtnListener} from './client-functions.js'
 
 export class Vertex {
     constructor(x, y) {
@@ -34,7 +35,7 @@ export class antAlg {
         }
         this.alpha = 1
         this.beta = 1
-        this.p = 0.08
+        this.p = 0.09
         this.shortestPath = []
         this.shortestPathLen = 0
         for (let i = 0; i < this.matrix.length; i++) {
@@ -55,18 +56,17 @@ export class antAlg {
         }
         let probabilities = []
         for (let i = 0; i < availableGoals.length; i++) {
-            //console.log(this.pheromone[curPosition][availableGoals[i]]**this.alpha)
-            //console.log((1 / this.matrix[curPosition][availableGoals[i]])**this.beta)
             probabilities.push((this.pheromone[curPosition][availableGoals[i]]**this.alpha) * 
             ((1 / this.matrix[curPosition][availableGoals[i]])**this.beta) / sum)
         }
-        if (probabilities.length === this.matrix.length - 1) {
+        if (probabilities.length === this.matrix.length - 1 && !this.end) {
             for (let i = 0; i < availableGoals.length; i++) {
-                if (probabilities[i] > 0.9 && !this.sure.includes(i)) this.sure.push(i)
+                if (probabilities[i] > 0.9 && !this.sure.includes(curPosition)) {
+                    this.sure.push(curPosition)
+                    break
+                }
             }
-            //console.log(this.sure)
         }
-        //console.log(probabilities)
         let roulette = []
         for (let i = 0; i < probabilities.length; i++) roulette[i] = probabilities[i]
         for (let i = 0; i < probabilities.length - 1; i++) {
@@ -101,8 +101,7 @@ export class antAlg {
                     availableGoals.splice(availableGoals.indexOf(curPosition), 1)
                 }
                 curPath.push(j)
-                if (j === 1) sumOfDelays += drawPath(curPath)
-                else drawPath(curPath)
+                sumOfDelays += drawPath(curPath)
                 for (let k = 0; k < curPath.length - 1; k++) {
                     curPathLen += this.matrix[curPath[k]][curPath[k + 1]]
                 }
@@ -118,20 +117,19 @@ export class antAlg {
                 for (let k = 0; k < curPath.length - 1; k++) {
                     this.pheromone[curPath[k]][curPath[k + 1]] += (verNum * 4000 / curPathLen)
                 }
-                //console.log(this.pheromone)
             }
-            if (this.sure.length >= verNum - 1) {
+            if (this.sure.length == verNum) {
                 counter++
             }
-            if (counter === 500) {
+            if (counter === 200) {
                 setTimeout(() => { 
                     drawResult(curPath)
-                }, sumOfDelays / verNum)
+                    canvas.addEventListener("click", canvasListener)
+                    clearBtn.addEventListener("click", clearBtnListener)
+                }, (sumOfDelays + 200 * delay * (verNum - 1) * (verNum - 1)) / (verNum + 1))
                 break
             }
         }
-        console.log(sumOfDelays / verNum)
-        
         console.log(this.pheromone)
         console.log(this.shortestPath)
         console.log(this.shortestPathLen)
