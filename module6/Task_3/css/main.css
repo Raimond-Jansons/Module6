@@ -1,0 +1,110 @@
+@font-face {
+    font-family: nasalization;
+    src: local("nasalization"), url(../../fonts/nasalization.ttf);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: nasalization;
+}
+
+body {
+    background-color: #313431;
+    color: #eee;
+    width: 100%;
+    height: 100vh;
+}
+
+div {
+    text-align: center;
+    padding: 10px;
+}
+
+.paint {
+    margin: 0 auto;
+    padding: 0;
+    width: 70%;
+    height: 70%;
+    position: relative;
+}
+
+canvas {
+    margin: 10px;
+    border: 1px solid #ccc;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#info {
+    font-size: 1.3em;
+}
+
+input, button {
+    padding: 2px;
+    margin: 5px 0;
+    vertical-align: baseline;
+}
+
+button {
+    margin: 5px;
+}
+
+input {
+    padding: 5px 10px;
+    width: 150px;
+    font-size: 1em;
+}
+
+.btn {
+    padding: 5px 15px;
+    background-color: #eee;
+    border: none;
+    font-family: nasalization;
+    font-size: 1em;
+    font-weight: bold;
+    color: #313431;
+    display: inline-block;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+    border: 1px solid #eee;
+}
+
+.btn:before {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: #313431;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 0;
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    transition: all .45s;
+}
+
+.btn:hover {
+    color: #eee;
+}
+
+.btn:hover:before {
+    height: 600%;
+}
+
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+.nav {
+    text-align: start;
+}
+
+.nav .btn {
+    padding: 8px 20px;
+    font-size: 1.3em;
+}

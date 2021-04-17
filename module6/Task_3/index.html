@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Genetic</title>
+</head>
+
+<body>
+    <div class="controls">
+        <div class="nav">
+            <button class="btn" onclick="window.location.href = '../index.html'">
+                <span>Back</span>
+            </button>
+        </div>
+        <div>
+            <button class="btn" id="loadBtn"><span>Загрузить</span></button>
+            <button class="btn" id="saveBtn"><span>Сохранить</span></button>
+        </div>
+        <div>
+            <button class="btn" id="clearBtn"><span>Очистить</span></button>
+            <button class="btn" id="runBtn"><span>Старт</span></button>
+        </div>
+        <div id="info"></div>
+    </div>
+    <div class="paint">
+        <canvas id="canvasRoute"></canvas>
+        <canvas id="canvasCities"></canvas>
+    </div>
+
+    <script src="js/main.js" type="module"></script>
+</body>
+
+</html>
