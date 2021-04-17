@@ -1,23 +1,30 @@
 import {Vertex, antAlg} from './Algorithm.js'
 const mainBlock = document.getElementById('main-block')
 export const canvas = document.getElementById('main-canvas')
+export const lineCanvas = document.getElementById('line-canvas')
 export const antCanvas = document.getElementById('ant-canvas')
 export const resultCanvas = document.getElementById('result-canvas')
 export const launchBtn = document.getElementById('launch-btn')
 export const clearBtn = document.getElementById('clear-btn')
 const context = canvas.getContext('2d')
+const lineContext = lineCanvas.getContext('2d')
 const antContext = antCanvas.getContext('2d')
 const resultContext = resultCanvas.getContext('2d')
 const vertexRadius = 20
-const delay = 3
+export const delay = 3
 const antColor = "blue"
 const bgColor = "#313431"
 const mainColor = "white"
+const lineColor = "#ACADAF"
 const resultColor = "red"
+
+let alg
 
 export function canvasInit() {
     canvas.width = mainBlock.clientWidth
     canvas.height = mainBlock.clientHeight
+    lineCanvas.width = canvas.width
+    lineCanvas.height = canvas.height
     antCanvas.width = canvas.width
     antCanvas.height = canvas.height
     resultCanvas.width = canvas.width
@@ -28,7 +35,7 @@ let verteces = []
 export function canvasListener(event) {
     const x = event.offsetX
     const y = event.offsetY
-    if (canIDraw(x, y)) {
+    if (canIDraw(x, y, vertexRadius)) {
         drawVertex(x, y)
         verteces.push(new Vertex(x, y))
         connectVerteces()
@@ -54,23 +61,18 @@ export function canIDraw(x, y, r) {
 export function connectVerteces() {
     if (verteces.length === 0) return
     else {
-        context.strokeStyle = mainColor
-        context.lineWidth = 3
         for (let i = 0; i < verteces.length - 1; i++) {   
-            context.moveTo(verteces[i].x, verteces[i].y)
-            context.lineTo(verteces[verteces.length - 1].x, verteces[verteces.length - 1].y)
-            context.stroke()
+            connectTwoVerteces(lineContext, i, verteces.length - 1, lineColor)
         }
     }
 }
 
-function connectTwoVerteces(i, j, color) {
-    console.log(i, j)
-    resultContext.strokeStyle = color
-    resultContext.lineWidth = 3
-    resultContext.moveTo(verteces[i].x, verteces[i].y)
-    resultContext.lineTo(verteces[j].x, verteces[j].y)
-    resultContext.stroke()
+function connectTwoVerteces(context, i, j, color) {
+    context.strokeStyle = color
+    context.lineWidth = 3
+    context.moveTo(verteces[i].x, verteces[i].y)
+    context.lineTo(verteces[j].x, verteces[j].y)
+    context.stroke()
 }
 
 export function getStepsQuantity(i, j) {
@@ -113,32 +115,39 @@ export function drawPath(arr) {
     let delaySum = 0
     for (let i = 0; i < arr.length - 1; i++) {
         setTimeout(() => { 
-            antMoving(arr[i], arr[i + 1])
+            delaySum += antMoving(arr[i], arr[i + 1])
         }, delaySum * delay)
-        delaySum += getStepsQuantity(arr[i], arr[i + 1])
     }
+    delaySum += getStepsQuantity(arr[arr.length - 2], arr[arr.length - 1])
     return delaySum
 }
 
-export async function drawResult(resultPath) {
+export function drawResult(resultPath) {
     console.log(resultPath)
     resultCanvas.style.zIndex = 10
     for (let i = 0; i < resultPath.length - 1; i++) {
-        connectTwoVerteces(resultPath[i], resultPath[i + 1], resultColor)
-        console.log(resultPath[i], resultPath[i + 1])
+        connectTwoVerteces(resultContext, resultPath[i], resultPath[i + 1], resultColor)
     }
 }
 
 export function algorithmLaunching() {
-    let alg = new antAlg(verteces);
+    antContext.clearRect(0, 0, antCanvas.width, antCanvas.height)
+    resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height)
+    antCanvas.width = antCanvas.width
+    resultCanvas.width = resultCanvas.width
+    alg = new antAlg(verteces)
     alg.launch()
 }
 
 export function clearBtnListener() {
     context.clearRect(0, 0, canvas.width, canvas.height);
+    lineContext.clearRect(0, 0, lineCanvas.width, lineCanvas.height)
     antContext.clearRect(0, 0, antCanvas.width, antCanvas.height)
     resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height)
-    resultCanvas.width = resultCanvas.width;
+    canvas.width = canvas.width
+    lineCanvas.width = lineCanvas.width
+    antCanvas.width = antCanvas.width
+    resultCanvas.width = resultCanvas.width
     resultCanvas.style.zIndex = 0
     verteces = []
 }
