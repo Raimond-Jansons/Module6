@@ -72,13 +72,6 @@ class Canvas {
     calcCoord(x, y) {
         let k = this.scaleSize;
         return [(x - this.cnv.offsetLeft) / k, (y - this.cnv.offsetTop) / k];
-        // x = (x - cnv.offsetLeft);
-        // y = (y - cnv.offsetTop);
-        // x = (x - cnv.offsetLeft) / CELL_SIZE;
-        // y = (y - cnv.offsetTop) / CELL_SIZE;
-        // x = Math.max(0, Math.min(PIC_SIZE - 1, x));
-        // y = Math.max(0, Math.min(PIC_SIZE - 1, y));
-        // return [Math.floor(x), Math.floor(y)];
     }
 
     isPaint;
@@ -193,32 +186,6 @@ class Canvas {
 }
 
 
-
-
-// let pic = [[]];
-
-
-
-function redraw() {
-    drawGrid();
-    for (let i = 0; i < PIC_SIZE; i++) {
-        for (let j = 0; j < PIC_SIZE; j++) {
-            if (pic[i][j] > 0) {
-                const color = (1 - pic[i][j]) * 255;
-                ctx.fillStyle = `rgb(
-                    ${color},
-                    ${color},
-                    ${color})`;
-                ctx.fillRect(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-            }
-        }
-    }
-}
-
-
-//let paintColor = 1;
-
-
 const CANVAS_SIZE = 500;
 const PIC_SIZE = 50;
 const CELL_SIZE = CANVAS_SIZE / PIC_SIZE;
@@ -260,7 +227,6 @@ document.onmouseup = (e) => {
     }
 
 }
-// cnv.onmouseout = endPaint;
 
 document.getElementById('clearBtn').onclick = () => {
     canvas.reset();
@@ -299,18 +265,9 @@ document.getElementById('trainBtn').onclick = () => {
     nn.train(examples, examples, epochs, batch_size, lr);
 };
 
-function test_on_ds() {
-    return nn.test(examples, 1);
-}
-
-window.test_on_ds = test_on_ds;
-
-
-
 document.getElementById('saveBtn').onclick = () => {
     nn.saveToFile();
 };
-
 
 const dropbox = document.getElementById("dropbox");
 dropbox.addEventListener("dragenter", dragenter, false);
@@ -354,16 +311,3 @@ function drop(e) {
     };
 }
 
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-window.showExamples = async () => {
-    for (const { input, output } of testSet) {
-        pic = Matrix.reshapeFrom(input, PIC_SIZE, PIC_SIZE).data;
-        redraw();
-        console.log(`%c${NN.ind_of_max(output)}`, "font-size:50px");
-        await sleep(1000);
-    }
-};
