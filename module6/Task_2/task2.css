@@ -1,0 +1,67 @@
+#canvas {
+    max-width: 100%;
+    height: auto;
+    border: 3px solid black;
+    display: block;
+    margin: 0 auto;
+}
+
+.parent {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: auto;
+}
+
+.block {
+    width: 600px;
+    height: 600px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    
+    
+}
+
+.btn {
+    padding: 10px 25px;
+    background-color: white;
+    border: none;
+    font-family: nasalization;
+    font-size: 25px;
+    font-weight: bold;
+    color: #313431;
+    display: inline-block;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+    border: 1px solid white;
+    }
+    .btn:before {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: #313431;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 0;
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    transition: all .45s;
+    }
+    .btn:hover {
+    color: white;
+    }
+    .btn:hover:before {
+    height: 600%;
+    }
+    .btn span {
+    position: relative;
+    z-index: 1;
+    }
