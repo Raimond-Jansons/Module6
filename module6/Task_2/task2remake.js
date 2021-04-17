@@ -14,16 +14,33 @@ finished = false
 x = 0
 y = 0
 
+const inputCount = document.getElementById("input-count")
+const inputApply = document.getElementById("input-apply")
+const launchBtn = document.getElementById("launch-btn")
+inputApply.addEventListener("click", () => {
+    countOfClusters = inputCount.value
+    console.log(countOfClusters)
+
+    clusters = []
+    for (let i = 0; i < countOfClusters; i++) {
+        clusters.push(new cluster(i, countOfClusters))
+    }
+
+    launchBtn.addEventListener("click", () => {
+        clustering()
+    })
+})
+
 class cluster {
 
     selectColor(colorNum, colors) {
         if (colors < 1) colors = 1; // defaults to one color - avoid divide by zero
-        return "hsl(" + (colorNum * (360 / colors) % 360) + ",100%,50%)";
+        return "hsl(" + (colorNum * (360 / colors) % 360) + ",100%,50%)"
     }
 
     constructor(i, countOfClusters) {
         // this.color = '#' + Math.floor(Math.random() * 16777215).toString(16)
-        this.color = this.selectColor(i, countOfClusters);
+        this.color = this.selectColor(i, countOfClusters)
         this.centerX
         this.centerY
         this.Lngth = 0
@@ -32,9 +49,7 @@ class cluster {
     }
 }
 
-for (let i = 0; i < countOfClusters; i++) {
-    clusters.push(new cluster(i, countOfClusters))
-}
+
 
 // for (let i = 0; i < KMedoidscount; i++) {
 //     Kmedoids.push(new cluster(i, KMedoidscount))
@@ -43,9 +58,9 @@ for (let i = 0; i < countOfClusters; i++) {
 canvas.addEventListener('click', function (e) {
     context.fillStyle = 'black'
     context.fillRect(e.offsetX - 10, e.offsetY - 10, 10, 10)
-    Points.push({ x: e.offsetX, y: e.offsetY });
+    Points.push({ x: e.offsetX, y: e.offsetY })
 
-    console.log(index);
+    console.log(index)
     console.log(Points[index].x, Points[index].y)
     index++
     if (index === 50) {
